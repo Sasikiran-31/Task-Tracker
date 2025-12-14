@@ -62,6 +62,10 @@ public class TaskService {
         } catch (IOException e) { throw new RuntimeException(e); }
     }
 
+    public void deleteAll(){
+        repo.deleteAll();
+    }
+
     private void sendEvent(String type, Task t) {
         String payload = String.format("{\"type\":\"%s\",\"taskId\":%d,\"title\":\"%s\",\"status\":\"%s\"}",
                 type, t.getId(), escape(t.getTitle()), t.getStatus());

@@ -51,6 +51,12 @@ public class TaskRepositoryJson {
         persist();
     }
 
+    public synchronized void deleteAll() {
+        if(!tasks.isEmpty()){
+            tasks.clear();
+        }
+    }
+
 private void load() throws IOException {
     if (!Files.exists(filePath)) return;
     try {

@@ -37,6 +37,7 @@ public class TaskCliApplication implements CommandLineRunner {
             System.out.println("3. Update task title");
             System.out.println("4. Mark task as DONE");
             System.out.println("5. Delete task");
+            System.out.println("6. Delete everything");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 
@@ -83,6 +84,13 @@ public class TaskCliApplication implements CommandLineRunner {
                         service.delete(deleteId);
                         System.out.printf("Deleted: #%d%n", deleteId);
                         break;
+
+                    case "6":
+                        System.out.println("Deleting everything!");
+                        service.deleteAll();
+                        System.out.println("Everything is Gone!");
+                        break;
+
 
                     case "0":
                         running = false;
