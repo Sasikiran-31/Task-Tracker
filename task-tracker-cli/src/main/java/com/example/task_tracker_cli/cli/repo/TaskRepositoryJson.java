@@ -51,10 +51,9 @@ public class TaskRepositoryJson {
         persist();
     }
 
-    public synchronized void deleteAll() {
-        if(!tasks.isEmpty()){
-            tasks.clear();
-        }
+    public synchronized void deleteAll() throws IOException{
+       tasks.clear();
+       persist();
     }
 
 private void load() throws IOException {

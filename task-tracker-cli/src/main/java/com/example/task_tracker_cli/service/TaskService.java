@@ -63,13 +63,18 @@ public class TaskService {
     }
 
     public void deleteAll(){
-        repo.deleteAll();
+        try{
+            repo.deleteAll();
+            sendEvent("CLEAR_REQUEST", new Task(-1, ""));
+        } catch (Exception e) {throw new RuntimeException(e); }
+
     }
 
     private void sendEvent(String type, Task t) {
         String payload = String.format("{\"type\":\"%s\",\"taskId\":%d,\"title\":\"%s\",\"status\":\"%s\"}",
                 type, t.getId(), escape(t.getTitle()), t.getStatus());
-        kafkaTemplate.send(new ProducerRecord<>(TOPIC, String.valueOf(t.getId()), payload));
+            kafkaTemplate.send(new ProducerRecord<>(TOPIC, String.valueOf(t.getId()), payload));
+
     }
 
     private String escape(String s) { return s == null ? "" : s.replace("\\", "\\\\").replace("\"", "\\\""); }
