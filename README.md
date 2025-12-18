@@ -171,13 +171,3 @@ This project demonstrates:
 
 ---
 
-## 📄 License
-
-This project is licensed under the **MIT License**.
-
----
-
-## 👤 Author
-
-**Sasikiran Sivakumar**
-Backend Developer | Java | Spring Boot | Distributed Systems
