@@ -1,4 +1,4 @@
-# 📋 Event-Driven Task Tracker 🚀
+# 📋 Event-Driven Task Tracker
 
 A robust, **microservices-oriented task management system** built with **Java 17** and **Spring Boot**. This project demonstrates an **Event-Driven Architecture (EDA)** by decoupling task management logic from event processing using **Apache Kafka**.
 
@@ -171,17 +171,3 @@ This project demonstrates:
 
 ---
 
-## 📄 License
-
-This project is licensed under the **MIT License**.
-
----
-
-## 👤 Author
-
-**Sasikiran Sivakumar**
-Backend Developer | Java | Spring Boot | Distributed Systems
-
----
-
-⭐ If you find this project useful, consider starring the repository!
