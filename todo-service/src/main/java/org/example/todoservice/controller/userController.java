@@ -3,7 +3,6 @@ package org.example.todoservice.controller;
 import org.example.todoservice.DTOS.UserDTO;
 import org.example.todoservice.model.User;
 import org.example.todoservice.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,19 +13,22 @@ import java.util.List;
 @RequestMapping("/api")
 public class userController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public userController(UserService userService) {
+        this.userService = userService;
+    }
 
 
 
     @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
-        return new ResponseEntity<List<UserDTO>>(userService.getAll(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
     @PostMapping("/users")
     public ResponseEntity<UserDTO> createUser(@RequestBody User user) {
-        return new ResponseEntity<UserDTO>(userService.save(user), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
     }
 
     @DeleteMapping("user/{id}")
