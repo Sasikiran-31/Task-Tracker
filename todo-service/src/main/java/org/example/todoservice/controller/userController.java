@@ -3,6 +3,7 @@ package org.example.todoservice.controller;
 import jakarta.servlet.http.HttpSession;
 import org.example.todoservice.DTOS.UserDTO;
 import org.example.todoservice.model.User;
+import org.example.todoservice.service.JWTGen;
 import org.example.todoservice.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,12 @@ public class userController {
 
     private final UserService userService;
     private final AuthenticationManager authManager;
+    private final JWTGen jwt;
 
-    public userController(UserService userService, AuthenticationManager authManager) {
+    public userController(UserService userService, AuthenticationManager authManager, JWTGen jwt) {
         this.userService = userService;
         this.authManager = authManager;
+        this.jwt = jwt;
     }
 
     @PostMapping("/register")
@@ -34,11 +37,12 @@ public class userController {
     public String login(@RequestBody User user) {
         Authentication auth = authManager
                 .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        System.out.println("UserName: "  + user.getUsername());
 
         if (auth.isAuthenticated()){
-            return "Successfully logged in";
+            return jwt.generateToken((user.getUsername()));
         } else {
-            return "Failed";
+            return "Login Failed";
         }
     }
 
