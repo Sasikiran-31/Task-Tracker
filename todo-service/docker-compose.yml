@@ -1,0 +1,20 @@
+version: '3.7'
+services:
+  app:
+    build: .
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/todo-1
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: todo-1
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
