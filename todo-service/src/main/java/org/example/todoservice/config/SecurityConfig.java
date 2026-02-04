@@ -35,7 +35,7 @@ public class SecurityConfig {
                         .authenticated())
                 .sessionManagement(session-> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                        .httpBasic(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
