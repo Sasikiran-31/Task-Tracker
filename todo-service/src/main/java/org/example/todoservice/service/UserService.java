@@ -1,6 +1,7 @@
 package org.example.todoservice.service;
 
 import jakarta.transaction.Transactional;
+import org.example.todoservice.DTOS.Notification_Dto;
 import org.example.todoservice.DTOS.TaskDTO;
 import org.example.todoservice.DTOS.UserDTO;
 import org.example.todoservice.model.Task;
@@ -9,6 +10,9 @@ import org.example.todoservice.repository.TaskRepo;
 import org.example.todoservice.repository.UserRepo;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,12 +21,15 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepo userRepo;
     private final TaskRepo taskRepo;
+    private final RestTemplate restTemplate;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+    private final String NOTIFICATION_URL = "http://localhost:8082/notifications";
 
-    public UserService(UserRepo userRepo, TaskRepo taskRepo) {
+    public UserService(UserRepo userRepo, TaskRepo taskRepo,  RestTemplate restTemplate) {
         this.userRepo = userRepo;
         this.taskRepo = taskRepo;
+        this.restTemplate = restTemplate;
     }
 
 
@@ -44,6 +51,13 @@ public class UserService {
                     .orElseThrow();
                 user.addTask(task);
                 taskRepo.save(task);
+                Notification_Dto payload = new Notification_Dto(task.getDescription(), userId);
+
+                try{
+                    restTemplate.postForEntity(NOTIFICATION_URL, payload, Void.class);
+                } catch (HttpClientErrorException e) {
+                    System.err.println("Failed to send notification");
+                }
                 return new UserDTO(user.getUsername(), user.getUserId());
 
     }
