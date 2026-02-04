@@ -8,6 +8,7 @@ import org.example.todoservice.model.Task;
 import org.example.todoservice.model.User;
 import org.example.todoservice.repository.TaskRepo;
 import org.example.todoservice.repository.UserRepo;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -24,7 +25,7 @@ public class UserService {
     private final RestTemplate restTemplate;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
-    private final String NOTIFICATION_URL = "http://localhost:8082/notifications";
+    private String NOTIFICATION_URL = "http://notification-service:8082/notifications";
 
     public UserService(UserRepo userRepo, TaskRepo taskRepo,  RestTemplate restTemplate) {
         this.userRepo = userRepo;

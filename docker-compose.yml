@@ -1,15 +1,21 @@
 version: '3.7'
 services:
   app:
-    build: .
+    build: todo-service
     ports:
       - "8081:8080"
     depends_on:
       - db
+      - notification-service
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/todo-1
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: admin
+
+  notification-service:
+    build: notification-service
+    ports:
+      - "8082:8080"
 
   db:
     image: postgres:17
