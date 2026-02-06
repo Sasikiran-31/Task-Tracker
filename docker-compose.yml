@@ -24,3 +24,10 @@ services:
       POSTGRES_PASSWORD: admin
     ports:
       - "5432:5432"
+
+    # Persist storage inside the Volumes
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
