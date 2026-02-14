@@ -1,87 +1,203 @@
-# Task Tracker
+# 🚀 Task Tracker — Scalable Microservices Task Management Platform
 
-A microservices-based task management application built with Spring Boot, PostgreSQL, and Docker. The system follows a decoupled architecture where a core task service communicates with a notification service to log activities.
+A production-style **microservices-based task management system** demonstrating real-world backend engineering practices including **JWT authentication**, **service decoupling**, **containerized deployment**, and **inter-service communication**.
 
-## Tech Stack
+Built using **Java**, **Spring Boot**, **PostgreSQL**, and **Docker**, this project simulates a scalable backend where a core task service communicates with a notification service to process activity events.
 
-* **Language:** Java 17.
-* **Framework:** Spring Boot (versions 4.0.1 and 4.0.2).
-* **Database:** PostgreSQL 17.
-* **Security:** Spring Security with JWT (JSON Web Tokens).
-* **Containerization:** Docker & Docker Compose.
-* **Build Tool:** Maven.
+---
 
-## Project Structure
+## 🎯 Project Highlights
 
-The repository is organized into two primary microservices:
+- 🧱 Microservices architecture with clear service boundaries
+- 🔐 Stateless JWT-based authentication & authorization
+- 🐳 Fully containerized environment using Docker Compose
+- 📡 REST-based inter-service communication
+- 🗄️ PostgreSQL-backed persistent storage
+- ⚙️ Clean RESTful API design
+- 🧩 Production-style backend structure
+- 🔄 Decoupled event notification flow
 
-* **`todo-service`**: Handles user authentication, registration, and CRUD operations for tasks.
-* **`notification-service`**: A lightweight service that receives and logs task-related notifications.
+---
 
-## Services Overview
+## 🏗️ System Architecture
 
-### 1. Todo Service
-* **Port:** 8081 (externally mapped) and 8080 (internal container port).
-* **Responsibilities:**
-    * User management and JWT-based authentication.
-    * Task creation and retrieval.
-    * Data persistence using PostgreSQL.
-    * Notifying the Notification Service upon task creation.
+```
+Client
+  │
+  ▼
+┌──────────────────────┐
+│      Todo Service     │
+│  Auth + Task Logic    │
+└──────────┬───────────┘
+           │ REST Communication
+           ▼
+┌──────────────────────┐
+│  Notification Service │
+│     Event Logging     │
+└──────────────────────┘
+           │
+           ▼
+      PostgreSQL
+```
 
-### 2. Notification Service
-* **Port:** 8082.
-* **Responsibilities:**
-    * Exposes a REST endpoint to receive notification payloads.
-    * Logs task descriptions and User IDs to the console.
+---
 
-## Getting Started
+## 🧱 Microservices Overview
 
-### Prerequisites
-* Docker and Docker Compose installed.
-* Java 17 (for local development).
+### 📝 Todo Service
 
-### Running with Docker Compose
-The entire stack, including the database, can be launched using the root `docker-compose.yml` file:
+**Ports**
+- External: `8081`
+- Internal: `8080`
+
+**Responsibilities**
+- User registration & authentication
+- JWT token issuance and validation
+- Task CRUD operations
+- Database persistence
+- Sends task events to Notification Service
+
+---
+
+### 🔔 Notification Service
+
+**Port**
+- `8082`
+
+**Responsibilities**
+- Receives task event payloads
+- Logs user actions and task descriptions
+- Demonstrates service decoupling
+
+---
+
+## 🛠️ Tech Stack
+
+| Category | Technology |
+|---|---|
+| Language | Java 17 |
+| Framework | Spring Boot 4.x |
+| Database | PostgreSQL 17 |
+| Security | Spring Security + JWT |
+| Containerization | Docker & Docker Compose |
+| Build Tool | Maven |
+
+---
+
+## 📁 Project Structure
+
+```
+task-tracker/
+│
+├── todo-service/
+│   ├── controllers/
+│   ├── services/
+│   ├── security/
+│   └── repositories/
+│
+├── notification-service/
+│   ├── controllers/
+│   └── services/
+│
+└── docker-compose.yml
+```
+
+---
+
+## 🚀 Getting Started
+
+### ✅ Prerequisites
+
+- Docker & Docker Compose
+- Java 17 (optional for local development)
+
+---
+
+### ▶️ Run the Application
 
 ```bash
 docker-compose up --build
 ```
 
-### 🌐 Services will be available at:
+---
 
-* **Todo Service**: `http://localhost:8081`
-* **Notification Service**: `http://localhost:8082`
-* **PostgreSQL**: `localhost:5432`
+## 🌐 Services
+
+| Service | URL |
+|---|---|
+| Todo Service | http://localhost:8081 |
+| Notification Service | http://localhost:8082 |
+| PostgreSQL | localhost:5432 |
 
 ---
 
-### 🚀 API Endpoints
+## 🔗 API Endpoints
 
-#### 🔑 Authentication
-* **POST `/api/register`**: Register a new user.
-* **POST `/api/login`**: Authenticate and receive a JWT token.
+### 🔐 Authentication
 
-#### 📝 Tasks (Requires Authentication)
-* **GET `/api/task/{user_id}`**: Retrieve all tasks for a specific user.
-* **POST `/api/task/{user_id}`**: Create a new task for a user.
-
-#### 🛠️ User Management
-* **GET `/api/users`**: List all registered users.
-* **DELETE `/api/user/{id}`**: Delete a specific user by ID.
-* **DELETE `/api/user/clear`**: Remove all users except for the "admin" user.
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/register` | Register new user |
+| POST | `/api/login` | Authenticate & receive JWT |
 
 ---
 
-### ⚙️ Configuration
+### 📝 Tasks *(Authentication Required)*
 
-#### 📊 Database
-In the Docker environment, the Todo service connects to PostgreSQL using the following credentials:
-* **URL**: `jdbc:postgresql://db:5432/todo-1`
-* **User**: `postgres`
-* **Password**: `admin`
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/task/{user_id}` | Retrieve tasks |
+| POST | `/api/task/{user_id}` | Create new task |
 
-#### 🛡️ Security
-* The application uses a stateless JWT filter.
-* Tokens are validated against a dynamically generated secret key during service startup.
-* Token expiration is set to 2 minutes.
+---
 
+### 👤 User Management
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/users` | List users |
+| DELETE | `/api/user/{id}` | Delete user |
+| DELETE | `/api/user/clear` | Clear users except admin |
+
+---
+
+## ⚙️ Configuration
+
+### 🗄️ Database (Docker Environment)
+
+```
+URL      : jdbc:postgresql://db:5432/todo-1
+User     : postgres
+Password : admin
+```
+
+---
+
+### 🔒 Security
+
+- Stateless JWT authentication
+- Runtime-generated signing key
+- Token expiration: **2 minutes**
+- Spring Security filter-based validation
+
+---
+
+## 📌 Engineering Design Decisions
+
+- Separate services to demonstrate microservice boundaries
+- Notification logic extracted to simulate asynchronous/event-driven systems
+- Stateless authentication for scalability
+- Containerization ensures reproducibility & portability
+- Clean layered architecture (Controller → Service → Repository)
+
+---
+
+## 🧠 Future Improvements
+
+- Replace REST notifications with message broker (Kafka/RabbitMQ)
+- Add API Gateway & centralized authentication
+- Implement distributed tracing & logging
+- Introduce CI/CD pipeline with automated tests
+- Add rate limiting & monitoring
+
+---
