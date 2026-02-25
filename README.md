@@ -29,7 +29,7 @@ Client
 │      Todo Service     │
 │  Auth + Task Logic    │
 └──────────┬───────────┘
-           │ REST Communication
+           │ Kafka Stream
            ▼
 ┌──────────────────────┐
 │  Notification Service │
