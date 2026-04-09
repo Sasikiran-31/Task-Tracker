@@ -8,7 +8,6 @@ import org.example.todoservice.model.Task;
 import org.example.todoservice.model.User;
 import org.example.todoservice.repository.TaskRepo;
 import org.example.todoservice.repository.UserRepo;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -67,6 +66,10 @@ public class UserService {
         User user = userRepo.findById(userId).orElseThrow();
         List<Task> tasks = user.getTasks();
         return tasks.stream().map(task -> new TaskDTO(task.getTaskId(), task.getDescription())).collect(Collectors.toList());
+    }
+
+    public boolean userExists(String userName){
+        return userRepo.existsByUsername(userName);
     }
 
     public List<UserDTO> getAll() {

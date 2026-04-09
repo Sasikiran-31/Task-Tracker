@@ -7,7 +7,7 @@ const HomePage = () => {
 
   const fetchAll = async () => {
     try{
-      const response = await fetch('http://localhost:8080/api/users', {
+      const response = await fetch('http://localhost:8081/api/users', {
         method : 'GET',
         headers : {
           'Authorization' : `Bearer ${token}`,
