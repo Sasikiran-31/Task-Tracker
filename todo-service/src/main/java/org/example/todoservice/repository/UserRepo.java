@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 
     void deleteUserByUsername(String username);
 
+    boolean existsByUsername(String username);
+
 }
