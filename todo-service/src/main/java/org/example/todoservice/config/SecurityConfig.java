@@ -28,15 +28,18 @@ public class SecurityConfig {
     private JWTFilter jwtFilter;
 
     @Bean
-    public SecurityFilterChain securityFilter(HttpSecurity http) {
+    public SecurityFilterChain securityFilter(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/api/register","/api/login")
                         .permitAll().anyRequest()
                         .authenticated())
-                .sessionManagement(session-> session
+                .sessionManagement(
+                        session-> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
+
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -60,5 +63,33 @@ public class SecurityConfig {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
+
+//    @Bean
+//    public corsCo() {
+//
+//        org.springframework.web.cors.CorsConfiguration configuration =
+//                new org.springframework.web.cors.CorsConfiguration();
+//
+//        configuration.setAllowedOrigins(
+//                java.util.List.of("http://localhost:8000")
+//        );
+//
+//        configuration.setAllowedMethods(
+//                java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")
+//        );
+//
+//        configuration.setAllowedHeaders(
+//                java.util.List.of("*")
+//        );
+//
+//        configuration.setAllowCredentials(true);
+//
+//        org.springframework.web.cors.UrlBasedCorsConfigurationSource source =
+//                new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
+//
+//        source.registerCorsConfiguration("/**", configuration);
+//
+//        return source;
+//    }
 
 }

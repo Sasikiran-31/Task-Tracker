@@ -20,10 +20,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepo.findByUsername(username);
         System.out.println("Trying to load user by username: " + user.getUsername());
 
-        if(user == null) {
-            throw new UsernameNotFoundException(username);
-        }
-
         return new UserDetailsPrinciple(user);
 
     }

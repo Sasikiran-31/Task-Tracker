@@ -1,6 +1,5 @@
 package org.example.todoservice.controller;
 
-import jakarta.servlet.http.HttpSession;
 import org.example.todoservice.DTOS.UserDTO;
 import org.example.todoservice.model.User;
 import org.example.todoservice.service.JWTGen;
@@ -16,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:8000")
 public class userController {
 
     private final UserService userService;
@@ -34,26 +34,26 @@ public class userController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
+    public ResponseEntity<String> login(@RequestBody User user) {
         Authentication auth = authManager
                 .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         System.out.println("UserName: "  + user.getUsername());
 
         if (auth.isAuthenticated()){
-            return jwt.generateToken((user.getUsername()));
+            String token = jwt.generateToken(user.getUsername());
+            System.out.println("Token: "  + token);
+            return new ResponseEntity<>(token,  HttpStatus.OK);
         } else {
-            return "Login Failed";
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
 
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserDTO>> getAllUsers(HttpSession httpSession) {
-        System.out.println(httpSession.getId());
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
-
 
     @DeleteMapping("user/{id}")
     public String deleteUser(@PathVariable int id) {

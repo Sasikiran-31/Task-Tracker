@@ -24,7 +24,7 @@ public class TaskController {
     @GetMapping("{user_id}")
     public ResponseEntity<List<TaskDTO>> getTasks(@PathVariable int user_id) {
 
-        return new ResponseEntity<List<TaskDTO>>(userService.findall(user_id), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findall(user_id), HttpStatus.OK);
     }
 
     @PostMapping("{user_id}")
